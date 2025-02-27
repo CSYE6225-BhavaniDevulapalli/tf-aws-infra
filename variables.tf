@@ -65,3 +65,6 @@ variable "security_group_name" {
 }
 
 
+variable "SSH_KEY_NAME" {
+  type = string
+}
