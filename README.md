@@ -106,3 +106,6 @@ Once the apply process completes, Terraform will output the details of the creat
 When you're finished with the infrastructure use the following command to destroy the infrastruture if needed
 
 - terraform destroy
+
+###
+Added extra 2 resources ec2 and security groups 
