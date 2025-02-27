@@ -4,7 +4,7 @@ resource "aws_instance" "webapp_ec2" {
   subnet_id                   = aws_subnet.public_subnet[0].id
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = true
-  key_name                    = "my_key_pair"
+  key_name                    = var.SSH_KEY_NAME
 
   root_block_device {
     volume_size           = var.root_volume_size
