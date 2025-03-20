@@ -68,3 +68,58 @@ variable "security_group_name" {
 variable "SSH_KEY_NAME" {
   type = string
 }
+
+
+# RDS Instance Configuration
+variable "rds_instance_identifier" {
+  description = "The identifier for the RDS instance"
+  default     = "csye6225"
+}
+
+variable "rds_db_name" {
+  description = "The name of the database"
+  default     = "csye6225"
+}
+
+variable "rds_username" {
+  description = "The master username for the RDS instance"
+  default     = "csye6225"
+}
+
+variable "db_port" {
+  description = "Database port"
+  type        = number
+  default     = 3306
+}
+
+variable "port" {
+  description = "Port for the web application"
+  type        = number
+  default     = 8080
+}
+
+variable "rds_allocated_storage" {
+  description = "The amount of storage to allocate for the RDS instance"
+  default     = 20
+}
+
+variable "rds_instance_class" {
+  description = "The instance class for the RDS instance"
+  default     = "db.t3.micro" # Cheapest instance class
+}
+
+variable "rds_password_length" {
+  description = "The length of the password to generate"
+  default     = 16
+}
+
+# MySQL Configuration (You can change it for PostgreSQL or MariaDB if needed)
+variable "db_engine" {
+  description = "The RDS engine to use (MySQL, PostgreSQL, or MariaDB)"
+  default     = "mysql"
+}
+
+variable "db_parameter_group_name" {
+  description = "Name for the DB parameter group"
+  default     = "csye6225-mysql"
+}
