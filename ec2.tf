@@ -40,11 +40,11 @@ echo "PORT='${var.port}'" >> .env
 # Start application
 sudo systemctl start my_webapp_service
 EOF
-)
+  )
   tags = {
     Name = var.instance_name
   }
-  
+
   depends_on = [aws_internet_gateway.igw, aws_security_group.app_sg, aws_db_instance.rds_instance]
 }
 
