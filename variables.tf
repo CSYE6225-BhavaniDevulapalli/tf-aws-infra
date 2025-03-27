@@ -123,3 +123,23 @@ variable "db_parameter_group_name" {
   description = "Name for the DB parameter group"
   default     = "csye6225-mysql"
 }
+
+
+
+
+variable "domain_name" {
+  description = "The domain name for the Route 53 zone"
+  type        = string
+}
+
+variable "subdomains" {
+  description = "List of subdomains to create in Route 53"
+  type        = list(string)
+  default     = [] # Default can be empty or you can specify subdomains here if needed
+}
+
+
+variable "metrics_namespace" {
+  description = "The metric name spavce"
+  type        = string
+}
