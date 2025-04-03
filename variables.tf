@@ -143,3 +143,62 @@ variable "metrics_namespace" {
   description = "The metric name spavce"
   type        = string
 }
+
+variable "launch_template_name" {
+  description = "Name of the launch template"
+  type        = string
+  default     = "webapp_lt"
+}
+
+
+variable "asg_name" {
+  description = "Name of the Auto Scaling Group"
+  type        = string
+  default     = "webapp-asg"
+}
+
+variable "min_size" {
+  description = "Minimum number of instances in ASG"
+  type        = number
+  default     = 3
+}
+
+variable "max_size" {
+  description = "Maximum number of instances in ASG"
+  type        = number
+  default     = 5
+}
+
+variable "desired_capacity" {
+  description = "Desired number of instances in ASG"
+  type        = number
+  default     = 3
+}
+
+# variable "public_subnet_ids" {
+#   description = "List of public subnet IDs"
+#   type        = list(string)
+# }
+
+# variable "target_group_arns" {
+#   description = "List of Target Group ARNs"
+#   type        = list(string)
+# }
+
+variable "health_check_grace_period" {
+  description = "Grace period for health checks"
+  type        = number
+  default     = 300
+}
+
+variable "scaledown_threshold" {
+  description = "The threshold value for scaling down the Auto Scaling Group"
+  type        = number
+  default     = 1
+}
+
+variable "scaleup_threshold" {
+  description = "The threshold value for scaling up the Auto Scaling Group"
+  type        = number
+  default     = 2.5
+}

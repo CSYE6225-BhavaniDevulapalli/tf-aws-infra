@@ -97,6 +97,20 @@ resource "aws_secretsmanager_secret_version" "rds_password_version" {
   })
 }
 
+# Retrieve the secret value from Secrets Manager
+data "aws_secretsmanager_secret_version" "db_password" {
+  secret_id = aws_secretsmanager_secret.rds_password_secret.id
+
+  # Explicit dependency to ensure the secret version is created before this is used
+  depends_on = [aws_secretsmanager_secret_version.rds_password_version]
+}
+
+# Retrieve the secret value from Secrets Manager
+
+# Decode the secret value
+locals {
+  db_password = jsondecode(data.aws_secretsmanager_secret_version.db_password.secret_string).password
+}
 
 # Outputs (Optional, for debugging or reference)
 output "rds_password" {
