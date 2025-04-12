@@ -18,16 +18,26 @@ resource "aws_s3_bucket_public_access_block" "bucket_access_webappcsye6225" {
 }
 
 # Default encryption
+# resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
+#   bucket = aws_s3_bucket.webapp_bucket.id
+
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       sse_algorithm = "AES256"
+#     }
+#   }
+# }
+# Default encryption with KMS
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
   bucket = aws_s3_bucket.webapp_bucket.id
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      kms_master_key_id = aws_kms_key.s3_key.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }
-
 # Lifecycle rule for transitioning objects to STANDARD_IA after 30 days
 resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
   bucket = aws_s3_bucket.webapp_bucket.id

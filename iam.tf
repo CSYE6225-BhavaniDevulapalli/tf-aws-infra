@@ -98,26 +98,7 @@ resource "aws_iam_policy" "s3_access_policy" {
   })
 }
 
-# SSM Parameter Store Policy - Allows EC2 to access SSM Parameter Store
-# resource "aws_iam_policy" "ssm_parameter_policy" {
-#   name        = "${var.instance_name}-ssm-parameter-policy"
-#   description = "Policy allowing EC2 instance to access SSM Parameter Store"
 
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "ssm:GetParameter",
-#           "ssm:GetParameters",
-#           "ssm:GetParametersByPath"
-#         ]
-#         Effect   = "Allow"
-#         Resource = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.instance_name}/*"
-#       }
-#     ]
-#   })
-# }
 
 # CloudWatch Agent Policy - Allows EC2 instance to interact with CloudWatch for logs and metrics
 resource "aws_iam_policy" "cloudwatch_policy" {
@@ -190,14 +171,33 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
 
-# Attach SSM Parameter Store Policy to EC2 Role
-# resource "aws_iam_role_policy_attachment" "ssm_parameter_attachment" {
-#   role       = aws_iam_role.ec2_role.name
-#   policy_arn = aws_iam_policy.ssm_parameter_policy.arn
-# }
 
-# Attach AWS managed policy for CloudWatch Agent
-# resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy" {
-#   role       = aws_iam_role.ec2_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-# }
+
+resource "aws_iam_policy" "ec2_kms_policy" {
+  name        = "${var.instance_name}-ec2-kms-policy"
+  description = "Policy allowing EC2 instance to use KMS key for encryption"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_kms_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.ec2_kms_policy.arn
+}
