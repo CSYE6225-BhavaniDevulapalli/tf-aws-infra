@@ -68,6 +68,8 @@ resource "aws_db_instance" "rds_instance" {
   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
   publicly_accessible    = false # This ensures the RDS instance is not publicly accessible
   skip_final_snapshot    = true
+  storage_encrypted      = true
+  kms_key_id             = aws_kms_key.rds_key.arn
 
   tags = {
     Name = "csye6225-rds"
@@ -77,8 +79,8 @@ resource "aws_db_instance" "rds_instance" {
 }
 
 resource "aws_secretsmanager_secret" "rds_password_secret" {
-  name = "${var.instance_name}-rds-password-secret-${random_id.secret_suffix.hex}"
-
+  name       = "${var.instance_name}-rds-password-secret-${random_id.secret_suffix.hex}"
+  kms_key_id = aws_kms_key.db_secrets_key.arn
   tags = {
     Name = "RDSPasswordSecret"
   }
